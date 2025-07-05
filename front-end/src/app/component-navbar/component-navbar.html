@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand">Loops Demo</a>
+
+    <!-- Keep all links visible as before -->
+    <div class="d-flex align-items-center ms-auto">
+
+      <ng-container *ngIf="!loggedIn">
+        <a class="navbar-brand" [routerLink]="['/login']">Login</a>
+        <a class="navbar-brand" [routerLink]="['/signup']">Signup</a>
+      </ng-container>
+
+      <ng-container *ngIf="loggedIn">
+        <a class="navbar-brand" [routerLink]="['/profile']">Items</a>
+        <a class="navbar-brand" href="#" (click)="logout($event)">Logout</a>
+
+        <!-- Profile Icon Dropdown -->
+        <div style="position: relative;">
+      <!-- Hidden checkbox -->
+      <input type="checkbox" id="dropdownToggle" />
+
+      <!-- Label acting as dropdown button -->
+      <label for="dropdownToggle" class="dropdown-label btn btn-light rounded-circle p-1">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          alt="profile"
+          width="32"
+          height="32"
+          style="border-radius: 50%;"
+        />
+      </label>
+
+      <!-- Dropdown menu -->
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li class="dropdown-item text-muted"><strong>John Doe</strong></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#" (click)="logout($event)">Logout</a></li>
+      </ul>
+    </div>
+
+      </ng-container>
+    </div>
+  </div>
+</nav>

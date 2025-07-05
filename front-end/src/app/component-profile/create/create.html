@@ -1,0 +1,50 @@
+<div *ngIf="user">
+  <h2>Welcome, {{ user.name }}</h2>
+  <p>Your user ID is {{ user.id }}</p>
+</div>
+
+
+
+
+  <div class="col-8 maincard">
+    <div class="card">
+      <div class="card-header">
+          Add Item
+      </div>
+
+      <div class="col-2 addbtn">
+           <a class="btn btn-info btn-m" [routerLink]="['/profile']">Back</a>
+      </div>
+      <div class="card-body">
+
+            <form (ngSubmit)="submit()">
+                <input type="hidden" name="userID" [(ngModel)]="userID">
+
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" [(ngModel)]="title" class="form-control" id="title" name="title" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="details" class="form-label">Details</label>
+                    <textarea [(ngModel)]="details" class="form-control" id="details" name="details" required></textarea>
+                </div>
+
+                <div *ngIf="error" class="text-danger">
+                    {{ error }}
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+
