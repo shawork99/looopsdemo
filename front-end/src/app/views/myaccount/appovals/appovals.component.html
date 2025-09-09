@@ -1,0 +1,109 @@
+<breadcrumb [title]="'Apps'" [subtitle]="'Approvals'" />
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4 justify-content-between">
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="filter.search"
+                                aria-label="Search">
+                            <button class="btn btn-primary" type="button" (click)="onSearch();">
+                                <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table datatable datatable-table" id="datatable_1">
+                        <thead>
+                            <tr>
+                                <th class="ps-0" width="2%"> #</th>
+                                <th class="ps-0" width="25%">Document</th>
+                                <th class="ps-0" width="20%">Document Code</th>
+                                <th class="ps-0" width="20%">Approver Name</th>
+                                <th class="ps-0" width="8%">Level</th>
+                                <th class="ps-0" width="15%">Status</th>
+                                <th class="ps-0 text-center" width="15%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td colspan="5" class="text-center">
+                                    <div class="spinner-border m-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="!isLoading">
+                                <tr *ngFor="let approver of approvels?.data; let i = index">
+                                    <td class="ps-0">
+                                        {{ approvels?.from + i }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ approver?.document_name }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ approver?.document_system_code }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ approver?.employee_name }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ approver?.level }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ approver?.status }}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="javascript:void(0);" class="btn btn-sm bg-primary-subtle me-1" data-bs-toggle="tooltip"
+                                            (click)="approveDocument(approver)" data-bs-original-title="Approve">
+                                            <i class="mdi mdi-check fs-14 text-primary"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr *ngIf="approvels?.data?.length === 0">
+                                <td colspan="8" class="text-center">
+                                    <h6 class="text-muted mt-5">No Records found</h6>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-3" *ngIf="approvels?.data?.length > 0">
+                    <div class="col-sm-4">
+                        <div class="datatable-dropdown mb-2">
+                            <label>
+                                <select class="datatable-selector" name="per-page" (change)="onRowsChange($event)">
+                                    <option value="5">5</option>
+                                    <option value="10" selected="">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                </select>
+                                entries per page
+                            </label>
+                        </div>
+                
+                    </div>
+                    <div class="col-sm-8" *ngIf="!isLoading">
+                        <ngb-pagination class="d-flex justify-content-end" [collectionSize]="approvels?.total"
+                            [pageSize]="approvels?.per_page" [page]="approvels?.current_page"
+                            (pageChange)="onPageChange($event)" aria-label="Custom pagination">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <nav class="datatable-pagination">
+                        <ul class="datatable-pagination-list"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

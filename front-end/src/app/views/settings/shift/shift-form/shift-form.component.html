@@ -1,0 +1,123 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-4 mb-2">
+            <label for="code" class="form-label"
+            >{{ 'code' | transloco }}</label
+            >
+            <input
+                    type="text"
+                    class="form-control"
+                    id="code"
+                    formControlName="code"
+                    [ngClass]="{'is-invalid' : form.get('code')?.invalid && ( submitted || form.get('code')?.touched)}"
+                    required
+            />
+            {{ form.get('code')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="name" class="form-label">{{ 'name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    [ngClass]="{'is-invalid' : form.get('name')?.invalid && ( submitted || form.get('name')?.touched)}"
+                    id="name"
+                    required
+            />
+            {{ form.get('name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="validationServer02" class="form-label">{{ 'action' | transloco }}</label>
+            <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            {{ form.get('is_active')?.errors | formErrors }}
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <table class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th colspan="2"></th>
+                        <th style="width: 230px;">
+                            Start Time
+                        </th>
+                        <th style="width: 230px;">
+                            End Time
+                        </th>
+                        <th>
+                            Grace Time (H)
+                        </th>
+                        <th>
+                            Work Hours (H)
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container formArrayName="shiftDetails">
+                        <tr *ngFor="let group of shiftDetails()?.controls; let i = index" [formGroupName]="i">
+                            <td>
+                                <app-toggle-switch-component [value]="group.get('is_week_day')?.value"
+                                                             (onValueChange)="onWeekChecked( $event, group)"></app-toggle-switch-component>
+                            </td>
+                            <td>
+                                {{ group.get('day_name').value }}
+                            </td>
+                            <td>
+                                <input type="time" class="form-control"
+                                       [ngClass]="{'is-invalid' : group.get('start_time')?.invalid && ( submitted || group.get('start_time')?.touched)}"
+                                       (input)="updateWorkedHours(group)"
+                                       formControlName="start_time"/>
+                                {{ group.get('start_time')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <input type="time" class="form-control"
+                                       [ngClass]="{'is-invalid' : group.get('end_time')?.invalid && ( submitted || group.get('end_time')?.touched)}"
+                                       (input)="updateWorkedHours(group)"
+                                       formControlName="end_time"/>
+                                {{ group.get('end_time')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <input type="number" class="form-control"
+                                       [ngClass]="{'is-invalid' : group.get('grace_time')?.invalid && ( submitted || group.get('grace_time')?.touched)}"
+                                       formControlName="grace_time"/>
+                                {{ group.get('grace_time')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                {{ group.get('work_hours').value ||  'N/A'}}
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

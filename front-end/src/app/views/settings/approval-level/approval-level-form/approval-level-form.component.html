@@ -1,0 +1,100 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">Level</label>
+            <input
+                    type="number"
+                    class="form-control"
+                    formControlName="level"
+                    [ngClass]="{'is-invalid' : form.get('level')?.invalid && ( submitted || form.get('level')?.touched)}"
+                    id="validationServer02"
+                    value=""
+            />
+            {{ form.get('level')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="approver_id" class="form-label">Approver</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('approver_id')?.invalid && ( submitted || form.get('approver_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="approver_id"
+                    id="approver_id"
+                    formControlName="approver_id"
+                    (change)="onApproverChange($event)">
+                <option *ngFor="let user of formData?.users"
+                        value="{{user?.id}}">{{ user?.first_name + ' ' + user?.last_name }}
+                </option>
+            </select>
+            {{ form.get('approver_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="approver_role_id" class="form-label">Approver Role</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('approver_role_id')?.invalid && ( submitted || form.get('approver_role_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="approver_role_id"
+                    id="approver_role_id"
+                    formControlName="approver_role_id">
+                <option *ngFor="let role of formData?.roles"
+                        value="{{role?.id}}">{{ role?.description }}
+                </option>
+            </select>
+            {{ form.get('approver_role_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="document_system_id" class="form-label">Document Type</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('document_system_id')?.invalid && ( submitted || form.get('document_system_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="document_system_id"
+                    id="document_system_id"
+                    formControlName="document_system_id">
+                <option *ngFor="let document of formData?.documentMaster"
+                        value="{{document?.id}}">{{ document?.document_code + ' | ' + document?.description }}
+                </option>
+            </select>
+            {{ form.get('document_system_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">Is Mandatory</label>
+            <app-toggle-switch-component [value]="form.get('is_mandatory')?.value"
+                                         (onValueChange)="onMandatoryChange($event)"></app-toggle-switch-component>
+            {{ form.get('is_mandatory')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">Status</label>
+            <app-toggle-switch-component [value]="form.get('status')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            {{ form.get('status')?.errors | formErrors }}
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>
+

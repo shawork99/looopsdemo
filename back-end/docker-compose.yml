@@ -1,0 +1,27 @@
+services:
+  maploops-dev-backend:
+    build: .
+    image: $IMAGE_NAME:$IMAGE_TAG
+    container_name: maploops-dev-backend
+    restart: always
+    ports:
+      - 8081:80
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.maploops-dev-backend.rule=Host(`dev-be.maploops.com`)
+      - traefik.http.routers.maploops-dev-backend.entrypoints=web
+      - traefik.http.routers.maploops-dev-backend.entrypoints=websecure
+      - traefik.http.routers.maploops-dev-backend.tls=true
+      - traefik.http.routers.maploops-dev-backend.tls.certresolver=myresolver
+    env_file:
+      - $HOME/dev/maploops-backend-files/.env.dev
+    # volumes:
+    #   - $HOME/dev/maploops-backend-files/storage/oauth-private.key:/var/www/html/storage/oauth-private.key
+    #   - $HOME/dev/maploops-backend-files/storage/oauth-public.key:/var/www/html/storage/oauth-public.key
+    networks:
+      - terminator
+
+networks:
+  terminator:
+    name: terminator
+    external: true

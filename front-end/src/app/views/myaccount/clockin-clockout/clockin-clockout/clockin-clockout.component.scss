@@ -1,0 +1,66 @@
+.clock-card {
+  // background-color: #fff;
+  transition: all 0.2s ease-in-out;
+
+  h5 {
+    font-size: 1rem;
+  }
+}
+
+.still-working {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #e6f4ea; /* soft green */
+  color: #2c7a4b;           /* dark green */
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.not-clocked-in {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #e6f4ea; /* soft green */
+  color: #ff1100;           /* dark green */
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+
+.today-events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .event-card {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 0.95rem;
+    line-height: 1.4;
+
+    &.event-user {
+      background-color: rgba(173, 216, 230, 0.3);
+      border-color: rgba(173, 216, 230, 0.5);
+      color: #000;
+    }
+
+    &.event-others {
+      background-color: rgba(198, 239, 206, 0.3);
+      border-color: rgba(198, 239, 206, 0.5);
+      color: #000;
+
+      .event-text {
+        white-space: pre-line; /* keep line breaks */
+        margin-top: 0.25rem;
+      }
+    }
+
+    i {
+      vertical-align: middle;
+      font-size: 1.2rem;
+    }
+  }
+}
+

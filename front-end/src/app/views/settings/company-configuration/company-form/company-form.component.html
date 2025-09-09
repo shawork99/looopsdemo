@@ -1,0 +1,204 @@
+<breadcrumb [title]="'Apps'" [subtitle]="'Company Information'" />
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <form class="row g-3 mt-3" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <input type="hidden" formControlName="id" />
+
+          <!-- Logo -->
+          <div class="row">
+             <div class="col-md-12" class="company-logo-wrapper">
+                <img
+                  src="{{previewImage || 'assets/images/company.jpg'}}"
+                  alt="Company Logo"
+                  class="company-logo"
+                />
+                <a
+                  href="javascript:void(0);"
+                  class="edit-btn"
+                  style="position: absolute;"
+                  data-bs-toggle="tooltip"
+                  (click)="proClick.click()"
+                  data-bs-original-title="Edit"
+                >
+                  <i class="mdi mdi-pencil-outline fs-14 "></i>
+                </a>
+                <input type="file" hidden #proClick accept="image/png, image/jpeg"
+                  (change)="onCompanyLogoUpdated($event)"/>
+              </div>
+          </div>
+
+          <!-- Name -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "name" | transloco }}</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="name"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('name')?.invalid &&
+                  (submitted || form.get('name')?.touched),
+              }"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                form.get('name')?.invalid &&
+                (submitted || form.get('name')?.touched)
+              "
+            >
+              {{ "this_field_required" | transloco }}
+            </div>
+          </div>
+
+          <!-- Company Code (read-only) -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Company Code" | transloco }}</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="company_code"
+              readonly
+            />
+          </div>
+
+          <!-- Country -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Country" | transloco }}</label>
+            <input type="text" class="form-control" formControlName="country" />
+          </div>
+
+          <!-- Currency -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Currency" | transloco }}</label>
+            <select
+              class="form-select"
+              formControlName="currency"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('currency')?.invalid &&
+                  (submitted || form.get('currency')?.touched),
+              }"
+            >
+              <option [ngValue]="null">{{ "-- Select --" }}</option>
+              <option *ngFor="let c of currencies" [ngValue]="c.id">
+                {{ c.name }}
+              </option>
+            </select>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                form.get('currency')?.invalid &&
+                (submitted || form.get('currency')?.touched)
+              "
+            >
+              {{ "this_field_required" | transloco }}
+            </div>
+          </div>
+
+          <!-- Time Zone -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Time Zone" | transloco }}</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="time_zone"
+            />
+          </div>
+
+          <!-- Contact Person -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Contact Person" | transloco }}</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="contact_person"
+            />
+          </div>
+
+          <!-- Contact Email -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Contact Mail" | transloco }}</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="contact_email"
+              [ngClass]="{
+                'is-invalid':
+                  form.get('contact_email')?.invalid &&
+                  (submitted || form.get('contact_email')?.touched),
+              }"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                form.get('contact_email')?.invalid &&
+                (submitted || form.get('contact_email')?.touched)
+              "
+            >
+              {{ "enter_valid_email" | transloco }}
+            </div>
+          </div>
+
+          <!-- Contact No -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Contact Number" | transloco }}</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="contact_no"
+            />
+          </div>
+
+          <!-- Start Date -->
+          <div class="col-md-6">
+            <label class="form-label">{{
+              "Company Start Date" | transloco
+            }}</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="company_start_date"
+            />
+          </div>
+
+          <!-- Memo -->
+          <div class="col-md-12">
+            <label class="form-label">{{ "Memo" | transloco }}</label>
+            <textarea
+              class="form-control"
+              rows="2"
+              formControlName="memo"
+            ></textarea>
+          </div>
+
+          <!-- Active -->
+          <div class="col-md-6">
+            <label class="form-label">{{ "Is Active" | transloco }}</label>
+            <app-toggle-switch-component
+              [value]="form.get('is_active')?.value"
+              (onValueChange)="form.patchValue({ is_active: $event })"
+            >
+            </app-toggle-switch-component>
+          </div>
+
+          <!-- Submit -->
+          <div class="col-12 text-end">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="loading$ | async"
+            >
+              <ng-container *ngIf="loading$ | async">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              </ng-container>
+              {{ "update" | transloco }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

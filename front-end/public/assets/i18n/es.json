@@ -1,0 +1,9 @@
+{
+  "code": "Código",
+  "name": "Nombre",
+  "status": "estado",
+  "action": "acción",
+  "active" : "activa",
+  "description" : "Descripción",
+  "title" : "Título"
+}

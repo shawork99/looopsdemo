@@ -1,0 +1,395 @@
+<breadcrumb [title]="'App'" [subtitle]="'In / Out'" />
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-center">
+          <div
+            class="hando-main-sections d-flex align-items-center justify-content-between flex-wrap"
+          >
+            <!-- Profile Section (unchanged) -->
+            <div class="d-flex align-items-center">
+              <div class="hando-profile-main">
+                <img
+                  [src]="
+                    loadprofile?.profile_image
+                      ? loadprofile.profile_image
+                      : loadprofile?.gender === 1
+                        ? 'assets/images/users/male.jpg'
+                        : loadprofile?.gender === 2
+                          ? 'assets/images/users/female.jpg'
+                          : 'assets/images/users/user-24.png'
+                  "
+                  class="rounded-circle img-fluid avatar-xxl img-thumbnail float-start"
+                  alt="image profile"
+                />
+                <span class="sil-profile_main-pic-change img-thumbnail">
+                  <i class="mdi mdi-camera text-white"></i>
+                </span>
+              </div>
+
+              <div class="overflow-hidden ms-md-4 ms-2">
+                <h4 class="m-0 text-dark fs-20">
+                  {{ loadprofile?.first_name }}
+                </h4>
+                <p class="my-1 text-muted fs-16">
+                  {{ loadprofile?.designation }}
+                </p>
+                <p class="my-1 text-muted fs-16">
+                  {{ loadprofile?.department }} Department
+                </p>
+              </div>
+            </div>
+
+            <!-- Clock In Button -->
+            <div class="me-5">
+              <button
+                class="btn btn-md px-5 py-2"
+                [ngClass]="
+                  buttonText === 'Clock In' ? 'btn-success' : 'btn-danger'
+                "
+                (click)="openClockConfirm()"
+              >
+                {{ buttonText }}
+              </button>
+            </div>
+          </div>
+
+          <div class="row text-center mt-4 align-items-stretch">
+            <!-- Clock In -->
+            <div class="col-md-3 col-12 mb-2 d-flex">
+              <div
+                class="border p-3 rounded shadow-sm clock-card w-100 h-100 d-flex flex-column justify-content-between"
+              >
+                <div>
+                  <p class="mb-1 text-muted fs-14">Clock In</p>
+                  <h5
+                    class="m-0 fw-bold fs-16"
+                    [ngClass]="{
+                      'not-clocked-in': clockInTime === 'Not clocked-in',
+                      'text-dark': clockInTime !== 'Not clocked-in',
+                    }"
+                  >
+                    {{ clockInTime }}
+                  </h5>
+                </div>
+
+                <!-- Clock-in status badges (bottom) -->
+                <div class="mt-2">
+                  <ng-container
+                    *ngFor="let s of getStatusesByAction('clock_in')"
+                  >
+                    <span [ngClass]="getBadgeClass(s.type) + ' me-1 mb-1'">
+                      {{ getBadgeLabel(s.type) }} -
+                      {{ formatStatusTime(s.timestamp) }}
+                    </span>
+                  </ng-container>
+
+                  <div
+                    *ngIf="getStatusesByAction('clock_in').length === 0"
+                    class="text-muted small mt-1"
+                  >
+                    No clock-in status for today
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Clock Out -->
+            <div class="col-md-3 col-12 mb-2 d-flex">
+              <div
+                class="border p-3 rounded shadow-sm clock-card w-100 h-100 d-flex flex-column justify-content-between"
+              >
+                <div>
+                  <p class="mb-1 text-muted fs-14">Clock Out</p>
+                  <h5 class="m-0 fw-bold fs-16">
+                    <span
+                      [ngClass]="{
+                        'still-working': clockOutTime === 'Still Working',
+                        'not-clocked-in': clockOutTime === 'Not clocked-in',
+                        'text-dark':
+                          clockOutTime !== 'Still Working' &&
+                          clockOutTime !== 'Not clocked-in',
+                      }"
+                    >
+                      {{ clockOutTime }}
+                    </span>
+                  </h5>
+                </div>
+
+                <!-- Clock-out status badges (bottom) -->
+                <div class="mt-2">
+                  <ng-container
+                    *ngFor="let s of getStatusesByAction('clock_out')"
+                  >
+                    <span [ngClass]="getBadgeClass(s.type) + ' me-1 mb-1'">
+                      {{ getBadgeLabel(s.type) }} -
+                      {{ formatStatusTime(s.timestamp) }}
+                    </span>
+                  </ng-container>
+
+                  <div
+                    *ngIf="getStatusesByAction('clock_out').length === 0"
+                    class="text-muted small mt-1"
+                  >
+                    No clock-out status for today
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Worked Hours -->
+            <div class="col-md-3 col-12 mb-2 d-flex">
+              <div
+                class="border p-3 rounded shadow-sm clock-card w-100 h-100 d-flex flex-column justify-content-between"
+              >
+                <div>
+                  <p class="mb-1 text-muted fs-14">Worked Hours</p>
+                  <h5 class="m-0 fw-bold fs-16">
+                    <span
+                      [ngClass]="{
+                        'still-working': workedHours === 'Still Working',
+                        'not-clocked-in': workedHours === 'Not clocked-in',
+                        'text-dark':
+                          workedHours !== 'Still Working' &&
+                          workedHours !== 'Not clocked-in',
+                      }"
+                    >
+                      {{ workedHours }}
+                    </span>
+                  </h5>
+                </div>
+
+                <!-- optional small footer area if needed (kept empty for symmetry) -->
+                <div class="mt-2 text-muted small">
+                  <!-- keep for spacing/visual balance -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Today's total (with menu button) -->
+            <div class="col-md-3 col-12 mb-2 d-flex">
+              <div
+                class="border p-3 rounded shadow-sm clock-card w-100 h-100 position-relative d-flex flex-column justify-content-between"
+              >
+                <!-- menu icon button top-right -->
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary position-absolute"
+                  style="right: 12px; top: 12px; z-index: 20"
+                  title="View all sessions"
+                  (click)="openSessionsModal()"
+                >
+                  <i class="mdi mdi-menu"></i>
+                </button>
+
+                <div>
+                  <p class="mb-1 text-muted fs-14">Today's total</p>
+                  <h5 class="m-0 fw-bold fs-16">
+                    <span class="fw-bold text-dark">{{
+                      totalWorkedDisplay
+                    }}</span>
+                    <small
+                      *ngIf="includesOngoingInTotal"
+                      class="text-muted d-block"
+                      style="font-weight: 400"
+                    >
+                      (includes ongoing)</small
+                    >
+                  </h5>
+                </div>
+
+                <!-- small footer (keeps spacing equal) -->
+                <div class="mt-2 text-muted small">
+                  <!-- optional: place summary or hint -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="userMessage || otherCelebrantsMessage"
+            class="today-events-container mt-3"
+          >
+            <!-- User's own message -->
+            <div *ngIf="userMessage" class="event-card event-user mb-2">
+              <i class="mdi mdi-star-circle-outline me-2"></i>
+              <strong>Personal:</strong> {{ userMessage }}
+            </div>
+
+            <!-- Other celebrants message -->
+            <div *ngIf="otherCelebrantsMessage" class="event-card event-others">
+              <strong>Today Events:</strong>
+              <div class="event-text">
+                {{ otherCelebrantsMessage }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Section -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <app-calendar></app-calendar>
+              <!-- Embed the calendar here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sessions Modal (upgraded UI) -->
+<ng-template #sessionsModal let-modal>
+  <div class="modal-header border-bottom-0">
+    <div class="d-flex align-items-center w-100 justify-content-between">
+      <div>
+        <h5 class="modal-title mb-0">Today's Sessions</h5>
+        <small class="text-muted">Detailed clock-in/out pairs for today</small>
+      </div>
+
+      <div class="text-end">
+        <div class="small text-muted">Total worked</div>
+        <div class="fw-bold fs-5">{{ totalWorkedDisplay }}</div>
+        <div *ngIf="includesOngoingInTotal" class="small text-muted">
+          includes ongoing
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn-close ms-3"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+
+  <div class="modal-body p-0">
+    <div *ngIf="sessions?.length === 0" class="text-center py-5">
+      <img
+        src="assets/images/empty-state/calendar.svg"
+        alt="No sessions"
+        style="width: 120px; opacity: 0.6"
+        class="mb-3"
+      />
+      <div class="h6 text-muted">No sessions recorded for today.</div>
+      <div class="small text-muted">
+        Click the button to start your first clock in.
+      </div>
+    </div>
+
+    <div *ngIf="sessions?.length > 0" class="p-3">
+      <!-- header row (labels) -->
+      <div class="row text-muted small mb-2 gx-3 align-items-center">
+        <div class="col-2">Session</div>
+        <div class="col-5">In / Out</div>
+        <div class="col-3 text-center">Duration</div>
+        <div class="col-2 text-end">Status</div>
+      </div>
+
+      <!-- sessions list: each session is a single row -->
+      <div class="list-group">
+        <div
+          *ngFor="let s of sessions; let i = index"
+          class="list-group-item list-group-item-action px-3 py-2"
+        >
+          <div class="row align-items-center gx-3">
+            <!-- session index -->
+            <div class="col-2 d-flex flex-column">
+              <div class="small text-muted">#{{ s.index }}</div>
+              <div class="fw-semibold">
+                {{ s.inTimeDisplay.slice(0, 5) === "--" ? "" : "" }}
+              </div>
+            </div>
+
+            <!-- in/out (two mini columns inside) -->
+            <div class="col-5">
+              <div class="row gx-2">
+                <div class="col-6 d-flex align-items-center">
+                  <i class="mdi mdi-login fs-5 text-success me-2"></i>
+                  <div>
+                    <div class="small text-muted">Clock In</div>
+                    <div class="fw-bold">{{ s.inTimeDisplay }}</div>
+                  </div>
+                </div>
+
+                <div class="col-6 d-flex align-items-center">
+                  <i class="mdi mdi-logout fs-5 text-danger me-2"></i>
+                  <div>
+                    <div class="small text-muted">Clock Out</div>
+                    <div
+                      class="fw-bold"
+                      [ngClass]="{ 'text-muted': s.isOngoing }"
+                    >
+                      {{ s.outTimeDisplay }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- duration -->
+            <div class="col-3 text-center">
+              <span
+                class="badge fs-6"
+                [ngClass]="
+                  s.isOngoing
+                    ? 'bg-warning text-dark p-2'
+                    : 'bg-primary text-white p-2'
+                "
+              >
+                {{ s.durationDisplay }}
+              </span>
+              <div class="small text-muted mt-1">session length</div>
+            </div>
+
+            <!-- status -->
+            <div class="col-2 text-end">
+              <div *ngIf="s.isOngoing">
+                <span class="badge bg-warning text-dark">Ongoing</span>
+              </div>
+              <div *ngIf="!s.isOngoing">
+                <span class="badge bg-success text-white">Completed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end item -->
+      </div>
+
+      <!-- totals / summary -->
+      <div class="mt-3">
+        <div class="card border-0 bg-light">
+          <div
+            class="card-body p-3 d-flex align-items-center justify-content-between"
+          >
+            <div>
+              <div class="small text-muted">Total sessions</div>
+              <div class="fw-bold">{{ sessions?.length || 0 }}</div>
+            </div>
+
+            <div class="text-center">
+              <div class="small text-muted">Total worked</div>
+              <div class="fw-bold">{{ totalWorkedDisplay }}</div>
+              <div *ngIf="includesOngoingInTotal" class="small text-muted">
+                Includes ongoing session
+              </div>
+            </div>
+
+            <div class="text-end">
+              <button
+                class="btn btn-sm btn-outline-secondary"
+                (click)="modal.close()"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end sessions block -->
+  </div>
+</ng-template>

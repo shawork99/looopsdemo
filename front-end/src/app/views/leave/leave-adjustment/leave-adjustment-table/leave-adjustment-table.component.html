@@ -1,0 +1,126 @@
+<breadcrumb [title]="'Apps'" [subtitle]="'Leave Adjustment'"/>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4 justify-content-between">
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search..."
+                                [(ngModel)]="filter.search" aria-label="Search">
+                            <button class="btn btn-primary" type="button" (click)="onSearch();">
+                                <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-sm float-end" type="button" style="margin-right: 20px;"
+                            (click)="goToAdd()">
+                            <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table datatable datatable-table" id="datatable_1">
+                        <thead>
+                            <tr>
+                                <th class="ps-0" width="2%"> #</th>
+                                <th class="ps-0" width="15%">Document Code</th>
+                                <th class="ps-0" width="25%">Description</th>
+                                <th class="ps-0" width="20%">Leave Group</th>
+                                <th class="ps-0" width="15%">Adjustment Date</th>
+                                <th class="ps-0" width="15">Status</th>
+                                <th class="ps-0" width="8%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="isLoading">
+                                <td colspan="5" class="text-center">
+                                    <div class="spinner-border m-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="!isLoading">
+                                <tr *ngFor="let adjustment of leaveAdjustment?.data; let i = index">
+                                    <td class="ps-0">
+                                        {{ leaveAdjustment?.from + i }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ adjustment?.document_code }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ adjustment?.description }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ adjustment?.leave_group?.name }}
+                                    </td>
+                                    <td class="ps-0">
+                                        {{ adjustment?.adjustment_date | date: 'fullDate' }}
+                                    </td>
+                                    <td>
+                                        <ng-container *ngIf="adjustment.confirmed_yn | statusLabel:adjustment.approved_yn:adjustment.rejected_yn as status">
+                                            <span [ngClass]="status.cssClass">{{ status.label }}</span>
+                                        </ng-container>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="javascript:void(0);" class="btn btn-sm bg-primary-subtle me-1" data-bs-toggle="tooltip"
+                                            (click)="goToEdit(adjustment?.id)" data-bs-original-title="Edit">
+                                            <i class="mdi mdi-pencil-outline fs-14 text-primary"></i>
+                                        </a>
+                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-subtle" data-bs-toggle="tooltip"
+                                            (click)="showDeleteAlert(adjustment?.id)" data-bs-original-title="Delete">
+                                            <i class="mdi mdi-delete fs-14 text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <tr *ngIf="leaveAdjustment?.data?.length === 0">
+                                <td colspan="8" class="text-center">
+                                    <h6 class="text-muted mt-5">No Records found</h6>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-3" *ngIf="leaveAdjustment?.data?.length > 0">
+                    <div class="col-sm-4">
+                        <div class="datatable-dropdown mb-2">
+                            <label>
+                                <select class="datatable-selector" name="per-page" (change)="onRowsChange($event)">
+                                    <option value="5">5</option>
+                                    <option value="10" selected="">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                </select>
+                                entries per page
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-8" *ngIf="!isLoading">
+                        <ngb-pagination class="d-flex justify-content-end" [collectionSize]="leaveAdjustment?.total"
+                            [pageSize]="leaveAdjustment?.per_page" [page]="leaveAdjustment?.current_page"
+                            (pageChange)="onPageChange($event)" aria-label="Custom pagination">
+                            <ng-template ngbPaginationPrevious>Prev</ng-template>
+                            <ng-template ngbPaginationNext>Next</ng-template>
+                        </ngb-pagination>
+                    </div>
+                    <nav class="datatable-pagination">
+                        <ul class="datatable-pagination-list"></ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

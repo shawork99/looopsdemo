@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" *ngIf="form" [formGroup]="form">
+        <div class="col-md-12">
+            <label for="title" class="form-label">Title</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="title"
+                    [ngClass]="{'is-invalid' : form.get('title')?.invalid && ( submitted || form.get('title')?.touched)}"
+                    id="title"
+                    value=""
+            />
+            {{ form.get('title')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="date" class="form-label">Date</label>
+            <input
+              type="date"
+              class="form-control"
+              [ngClass]="{'is-invalid' : form.get('date')?.invalid && ( submitted || form.get('date')?.touched)}"
+              id="date"
+              formControlName="date" value="" />
+            {{ form.get('date')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="event_type" class="form-label">Event Type</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('event_type')?.invalid && ( submitted || form.get('event_type')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="event_type"
+                    id="event_type"
+                    formControlName="event_type">
+                <option value="hoilday"> Holiday </option>
+                <option value="event"> Event </option>
+            </select>
+            {{ form.get('event_type')?.errors | formErrors }}
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

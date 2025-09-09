@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card title-card-body">
+                <div class="card-body">
+                    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav nav-tabs" role="tablist">
+                        <li *ngFor="let tab of tabs" [ngbNavItem]="tab.id">
+                            <a ngbNavLink><h6>{{ tab.title }}</h6></a>
+                            <ng-template ngbNavContent>
+                                <app-request-status-table [requestTypeId]="tab.id"></app-request-status-table>
+                            </ng-template>
+                        </li>
+                    </ul>
+                    <div [ngbNavOutlet]="nav" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

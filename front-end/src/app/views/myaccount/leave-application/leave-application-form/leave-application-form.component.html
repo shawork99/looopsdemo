@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modal.close()" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="leaveForm" (ngSubmit)="submitForm()">
+    
+        <!-- Leave Type -->
+        <div class="mb-3">
+            <label class="form-label">Leave Type</label>
+            <select class="form-select" formControlName="leaveType" (change)="onLeaveTypeChange()">
+                <option value="" disabled>Select Leave Type</option>
+                <option *ngFor="let type of leaveTypes" [value]="type.id">{{ type.name }}</option>
+            </select>
+        </div>
+    
+        <!-- From Date -->
+        <div class="mb-3">
+            <label class="form-label">From</label>
+            <input type="date" class="form-control" formControlName="fromDate" (change)="calculateDays()" />
+        </div>
+    
+        <!-- To Date -->
+        <div class="mb-3">
+            <label class="form-label">To</label>
+            <input type="date" class="form-control" formControlName="toDate" (change)="calculateDays()" />
+        </div>
+    
+        <!-- Half Day -->
+        <div *ngIf="isSameDay()" class="d-flex align-items-center mb-3">
+            <div class="form-check form-switch me-3">
+                <input class="form-check-input" type="checkbox" formControlName="isShortLeave" id="isShortLeave">
+                <label class="form-check-label" for="isShortLeave">Is Half day</label>
+            </div>
+            <select *ngIf="leaveForm.get('isShortLeave')?.value" class="form-select w-auto" formControlName="session">
+                <option value="" disabled>Select Session</option>
+                <option value="morning">Morning</option>
+                <option value="evening">Evening</option>
+            </select>
+        </div>
+    
+        <!-- Balance & Applied -->
+        <div class="d-flex justify-content-between mb-3">
+            <div class="border rounded p-2 text-center flex-fill me-2">
+                <span class="fw-bold text-primary">Balance - {{ availableBalance }}</span>
+            </div>
+            <div class="border rounded p-2 text-center flex-fill">
+                <span class="fw-bold text-primary">Applied - {{ appliedDays}}</span>
+            </div>
+        </div>
+    
+        <!-- Comments -->
+        <div class="mb-3">
+            <label class="form-label">Comments</label>
+            <textarea class="form-control" rows="3" placeholder="Type Comments..." formControlName="comments"></textarea>
+        </div>
+    
+        <!-- Attachment -->
+        <div class="mb-3">
+            <label class="form-label">Attach Files</label>
+            <div class="border rounded p-3 text-center bg-light">
+                <input type="file" class="form-control" formControlName="attachment" />
+                <small class="text-muted">Click and Attach files</small>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close()">
+        Close
+    </button>
+    <button type="button" class="btn btn-primary">
+        Save
+    </button>
+</div>

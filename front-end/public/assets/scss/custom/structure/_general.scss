@@ -1,0 +1,27 @@
+// 
+// general.scss
+//
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.auth-logo-light {
+  display: none;
+}
+
+html[data-bs-theme="dark"] {
+  .auth-logo-light {
+    display: block;
+  }
+
+  .auth-logo-dark {
+    display: none;
+  }
+}
+

@@ -1,0 +1,22 @@
+services:
+  maploops-dev-frontend:
+    build: .
+    image: $IMAGE_NAME:$IMAGE_TAG
+    container_name: maploops-dev-frontend
+    restart: always
+    ports:
+      - 8082:80
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.maploops-dev-frontend.rule=Host(`dev-fe.maploops.com`)
+      - traefik.http.routers.maploops-dev-frontend.entrypoints=web
+      - traefik.http.routers.maploops-dev-frontend.entrypoints=websecure
+      - traefik.http.routers.maploops-dev-frontend.tls=true
+      - traefik.http.routers.maploops-dev-frontend.tls.certresolver=myresolver
+    networks:
+      - terminator
+
+networks:
+  terminator:
+    name: terminator
+    external: true

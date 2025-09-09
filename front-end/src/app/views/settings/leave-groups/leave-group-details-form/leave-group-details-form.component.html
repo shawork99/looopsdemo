@@ -1,0 +1,166 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="shift_id" class="form-label">{{ 'leave_type' | transloco }}</label>
+            <select class="datatable-selector form-select"
+                    [(ngModel)]="selectedLeaveTypeId"
+                    name="leave_type_id"
+                    id="leave_type_id">
+                <option value=""> ---- select ---- </option>
+                <option *ngFor="let leaveType of formData?.leaveTypes"
+                        value="{{leaveType?.id}}">{{ leaveType?.code }} | {{ leaveType?.name }}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-6" style="margin-top: auto;margin-bottom: 4px;">
+            <button type="button" class="btn btn-sm btn-primary" (click)="onLeaveTypeAdd()">+</button>
+        </div>
+    </div>
+    <form class="row g-3 mt-3" [formGroup]="form">
+        <div class="col-md-12" *ngIf="selectedLeaveTypes?.length > 0">
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 15%">
+                            Leave Type
+                        </th>
+                        <th style="width: 10%">
+                            Policy
+                        </th>
+                        <th style="width: 10%">
+                            Number Days
+                        </th>
+                        <th style="width: 10%">
+                            Is Calendar Days
+                        </th>
+                        <th style="width: 10%">
+                            Maximum Applicable Days
+                        </th>
+                        <th style="width: 10%">
+                            Is Allow Minus
+                        </th>
+                        <th style="width: 10%">
+                            Is Carry Forward
+                        </th>
+                        <th style="width: 5%">
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container formArrayName="leaveGroupDetails">
+                        <tr *ngFor="let group of details()?.controls; let i = index" [formGroupName]="i">
+                            <td>
+                                {{ group.get('leaveTypeDetails').value?.code + ' | ' + group.get('leaveTypeDetails').value?.name || 'N/A' }}
+                            </td>
+                            <td>
+                                <select class="datatable-selector form-select"
+                                        formControlName="policy"
+                                        name="policy"
+                                        id="policy">
+                                    <option *ngFor="let policy of formData?.policyList"
+                                            value="{{policy}}">{{ policy }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="code"
+                                        formControlName="noOfDays"
+                                        (input)="onNumOfDaysChanged(group)"
+                                        [ngClass]="{'is-invalid' : group.get('noOfDays')?.invalid && ( submitted || group.get('noOfDays')?.touched)}"
+                                />
+                                {{ group.get('noOfDays')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <select class="datatable-selector form-select"
+                                        formControlName="isCalendarDay"
+                                        name="isCalendarDay"
+                                        id="isCalendarDay">
+                                    <option *ngFor="let item of yesNoList"
+                                            value="{{item?.value}}">{{ item?.label }}
+                                    </option>
+                                </select>
+                                {{ group.get('isCalendarDay')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="maximumApplicableDays"
+                                        formControlName="maximumApplicableDays"
+                                        [ngClass]="{'is-invalid' : group.get('maximumApplicableDays')?.invalid && ( submitted || group.get('maximumApplicableDays')?.touched)}"
+                                />
+                                {{ group.get('maximumApplicableDays')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <select class="datatable-selector form-select"
+                                        formControlName="isAllowMinus"
+                                        name="isAllowMinus"
+                                        id="isAllowMinus">
+                                    <option *ngFor="let item of yesNoList"
+                                            value="{{item?.value}}">{{ item?.label }}
+                                    </option>
+                                </select>
+                                {{ group.get('isAllowMinus')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="isCarryForward"
+                                        formControlName="isCarryForward"
+                                        [ngClass]="{'is-invalid' : group.get('isCarryForward')?.invalid && ( submitted || group.get('isCarryForward')?.touched)}"
+                                />
+                                {{ group.get('isCarryForward')?.errors | formErrors }}
+                            </td>
+                            <td>
+                                <a
+                                        href="javascript:void(0);"
+                                        class="btn btn-sm bg-danger-subtle me-1"
+                                        data-bs-toggle="tooltip"
+                                        (click)="removeItem(i,group.value?.leaveTypeId)"
+                                        data-bs-original-title="Delete"
+                                >
+                                    <i class="mdi mdi-delete fs-14 text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

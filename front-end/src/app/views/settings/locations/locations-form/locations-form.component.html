@@ -1,0 +1,114 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="onSubmit()" [autocomplete]="false">
+        <div class="col-md-6">
+            <label for="locationCode" class="form-label">{{ 'location_code' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="locationCode"
+                    formControlName="location_code"
+                    [ngClass]="{ 'is-invalid': form.get('location_code')?.invalid && (submitted || form.get('location_code')?.touched) }"
+                    required
+            />
+            {{ form.get('location_code')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="locationName" class="form-label">{{ 'location_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="locationName"
+                    formControlName="location_name"
+                    [ngClass]="{ 'is-invalid': form.get('location_name')?.invalid && (submitted || form.get('location_name')?.touched) }"
+                    required
+            />
+            {{ form.get('location_name')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-4">
+            <label for="latitude" class="form-label">{{ 'latitude' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="latitude"
+                    formControlName="latitude"
+                    [ngClass]="{ 'is-invalid': form.get('latitude')?.invalid && (submitted || form.get('latitude')?.touched) }"
+                    required
+            />
+            {{ form.get('latitude')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-4">
+            <label for="longitude" class="form-label">{{ 'longitude' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="longitude"
+                    formControlName="longitude"
+                    [ngClass]="{ 'is-invalid': form.get('longitude')?.invalid && (submitted || form.get('longitude')?.touched) }"
+                    required
+            />
+            {{ form.get('longitude')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-4">
+            <label for="radius" class="form-label">{{ 'radius' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="radius"
+                    formControlName="radius"
+                    [ngClass]="{ 'is-invalid': form.get('radius')?.invalid && (submitted || form.get('radius')?.touched) }"
+                    required
+            />
+            {{ form.get('radius')?.errors | formErrors }}
+        </div>
+        <div class="col-md-12">
+            <label for="validationServer02" class="form-label">{{'active' | transloco}}</label>
+            <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            {{ form.get('is_active')?.errors | formErrors }}
+        </div>
+        <div class="col-md-12 mt-3">
+            <label class="form-label">Click on the map to set Latitude & Longitude</label>
+            <div #leafletMap style="height: 300px; width: 100%; border: 1px solid #ccc; border-radius: 5px;"></div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        {{ 'close' | transloco }}
+    </button>
+    <button
+            type="submit"
+            class="btn btn-primary"
+            (click)="onSubmit()"
+            [disabled]="isLoading$ | async"
+    >
+        <ng-container *ngIf="isLoading$ | async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm me-2"></span>
+        </ng-container>
+        {{ 'save' | transloco }}
+    </button>
+</div>
+  

@@ -1,0 +1,94 @@
+<breadcrumb [title]="'Apps'" [subtitle]="'Navigation'"/>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-sm-2 mt-3">
+                        Select Role :
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <div class="spinner-border m-2 spinner-border-xl" *ngIf="isLoading" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <select
+                                style="width: 300px;"
+                                class="datatable-selector"
+                                name="per-page"
+                                [(ngModel)]="selectedRoleId"
+                                *ngIf="!isLoading"
+                                (change)="onRoleIdChanged()"
+                        >
+                            <option *ngFor="let role of formData?.roles" value="{{role?.id}}">{{ role?.name +' | '+role?.description}}</option>
+
+                        </select>
+                    </div>
+
+                     <div *ngIf="!selectedRoleId" 
+                            class="col-sm-4 px-2 py-1 rounded" id="navvalidation">
+                        Please select a user role to view permissions
+                    </div>
+                </div>
+                <div class="row justify-content-center" *ngFor="let navigation of navigations">
+                    <div class="col-sm-10">
+                        <div class="row mb-3">
+                            <div class="form-check col-sm-3">
+                                <input class="form-check-input" type="checkbox"
+                                       (ngModelChange)="onMainNavSelected(navigation,$event)"
+                                       [(ngModel)]="navigation.isSelected" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ navigation?.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center" *ngFor="let children of navigation?.children">
+                            <div class="col-sm-11">
+                                <div class="row mb-2">
+                                    <div class="form-check col-sm-2">
+                                        <input class="form-check-input" type="checkbox"
+                                               (ngModelChange)="onSubNavSelected(navigation, children,$event)"
+                                               [(ngModel)]="children.isSelected"
+                                               id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            {{ children?.label }}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center" *ngIf="children?.permissions?.length > 0">
+                                    <div class="col-sm-10">
+                                        <div class="row mb-2">
+                                            <div class="form-check col-sm-2"
+                                                 *ngFor="let permission of children?.permissions">
+                                                <input class="form-check-input" type="checkbox"
+                                                       [(ngModel)]="permission.isSelected"
+                                                       (ngModelChange)="onPermissionSelected(navigation, children, permission,$event)"
+                                                       value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                    {{ permission?.label }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-footer" *ngIf="navigations?.length > 0">
+                <div class="row justify-content-end">
+                    <div class="col-sm-2">
+                        <button class="btn btn-primary float-end" (click)="onSave()"
+                                [disabled]="isSaveButtonLoading$ |async">
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"
+                                  *ngIf="isSaveButtonLoading$ |async"></span>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

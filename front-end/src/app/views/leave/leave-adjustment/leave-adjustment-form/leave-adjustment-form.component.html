@@ -1,0 +1,59 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modal.close()" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-6">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" formControlName="description"
+                [ngClass]="{'is-invalid' : form.get('description')?.invalid && ( submitted || form.get('description')?.touched)}"
+                id="description" value="" />
+            {{ form.get('description')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="adjustment_date" class="form-label">Adjustment Date</label>
+            <input type="date" class="form-control"
+                [ngClass]="{'is-invalid' : form.get('adjustment_date')?.invalid && ( submitted || form.get('adjustment_date')?.touched)}" id="adjustment_date"
+                formControlName="adjustment_date" value="" />
+            {{ form.get('adjustment_date')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="leave_group_id" class="form-label">Leave Group</label>
+            <select
+                [ngClass]="{'is-invalid' : form.get('leave_group_id')?.invalid && ( submitted || form.get('leave_group_id')?.touched)}"
+                class="datatable-selector form-select" name="leave_group_id" id="leave_group_id" formControlName="leave_group_id">
+                <option *ngFor="let group of formData?.leaveGroup" value="{{group?.id}}">{{ group.name }}
+                </option>
+            </select>
+            {{ form.get('leave_group_id')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="policy_type" class="form-label">Policy</label>
+            <select
+                [ngClass]="{'is-invalid' : form.get('policy_type')?.invalid && ( submitted || form.get('policy_type')?.touched)}"
+                class="datatable-selector form-select" name="policy_type" id="policy_type" formControlName="policy_type">
+                <option value="yearly"> Yearly </option>
+                <option value="monthly"> Monthly </option>
+            </select>
+            {{ form.get('policy_type')?.errors | formErrors }}
+        </div>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close()">
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">{{ 'code' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="code"
+                    [ngClass]="{'is-invalid' : form.get('code')?.invalid && ( submitted || form.get('code')?.touched)}"
+                    id="validationServer02"
+                    value="Otto"
+                    required
+            />
+            {{ form.get('code')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6 mb-2">
+            <label for="validationServer01" class="form-label"
+            >{{ 'name' | transloco }}</label
+            >
+            <input
+                    type="text"
+                    class="form-control"
+                    id="validationServer01"
+                    value="Mark"
+                    formControlName="name"
+                    [ngClass]="{'is-invalid' : form.get('name')?.invalid && ( submitted || form.get('name')?.touched)}"
+                    required
+            />
+            {{ form.get('name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-12">
+            <label for="validationServer02" class="form-label">{{ 'active' | transloco }}</label>
+            <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            {{ form.get('is_active')?.errors | formErrors }}
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

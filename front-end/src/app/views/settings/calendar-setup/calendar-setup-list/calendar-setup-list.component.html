@@ -1,0 +1,29 @@
+<breadcrumb [title]="'Apps'" [subtitle]="'Calendar Setup'" />
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12">
+        <div class="card">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 mt-2">
+                <button class="btn btn-primary btn-sm float-end" type="button"
+                                style="margin-right: 20px;" (click)="goToAdd()">
+                    <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2"
+                        fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add
+                </button>
+            </div>
+            <div class="col-xl-12 col-lg-12">
+                <div class="card-body app-calendar">
+                    <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,267 @@
+<div class="tab-pane pt-4 card border" id="profile_setting" role="tabpanel" *ngIf="profile">
+  <div class="row">
+    <div class="row">
+      <!-- LEFT COLUMN -->
+      <div class="col-lg-7 col-xl-7">
+        <div class="card border" style="margin-left: 20px;">
+          <div class="card-header">
+            <h4 class="card-title mb-0">Personal Information</h4>
+          </div>
+          <div class="card-body row">
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Employee Code</label>
+              <div class="col-lg-12 col-xl-12">
+                <input class="form-control" type="text" [value]="profile.employee_code ?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">First Name</label>
+              <div class="col-lg-12 col-xl-12">
+                <input class="form-control" type="text" [value]="profile.first_name ?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Last Name</label>
+              <div class="col-lg-12 col-xl-12">
+                <input class="form-control" type="text" [value]="profile.last_name ?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Email Address</label>
+              <div class="col-lg-12 col-xl-12">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="mdi mdi-email"></i></span>
+                  <input type="text" class="form-control" [value]="profile.email ?? 'N/A'" readonly />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Department</label>
+              <div class="col-lg-12 col-xl-12">
+                  <input type="text" class="form-control" 
+                  [value]="(profile.department_code && profile.department) ? (profile.department_code + ' | ' + profile.department) : 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Designation</label>
+              <div class="col-lg-12 col-xl-12">
+               <input type="text" class="form-control" 
+               [value]="(profile.designation_code && profile.designation) ? (profile.designation_code + ' | ' + profile.designation) : 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Shift</label>
+                <div class="col-lg-12 col-xl-12">
+                  <input type="text" class="form-control" [value]="profile.shift?? 'N/A'" readonly />
+                </div>
+              </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Leave Group</label>
+              <div class="col-lg-12 col-xl-12">
+                <input type="text" class="form-control" [value]="profile.leave_type?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Reproting Manager</label>
+              <div class="col-lg-12 col-xl-12">
+                <input type="text" class="form-control" [value]="profile.reoprting_manger?? 'N/A'" readonly />
+              </div>
+            </div>
+
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Date of Joined</label>
+              <div class="col-lg-12 col-xl-12">
+                <input type="text" class="form-control" [value]="profile.date_of_joined?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Contact no</label>
+              <div class="col-lg-12 col-xl-12">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="mdi mdi-phone-outline"></i></span>
+                  <input class="form-control" type="text" [value]="profile.contact_no ?? 'N/A'" readonly />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Contact no office</label>
+              <div class="col-lg-12 col-xl-12">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="mdi mdi-phone-outline"></i></span>
+                  <input class="form-control" type="text" [value]="profile.contact_number_office ?? 'N/A'" readonly />
+                </div>
+              </div>
+            </div>
+            
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Country</label>
+              <div class="col-lg-12 col-xl-12">
+                <input class="form-control" type="text" [value]="profile.country ?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 col-lg-6 col-xl-6">
+              <label class="form-label">Date of Birth</label>
+              <div class="col-lg-12 col-xl-12">
+                <input type="text" class="form-control" [value]="profile.date_of_birth ?? 'N/A'" readonly />
+              </div>
+            </div>
+
+            <div class="form-group mb-3 row">
+              <label class="form-label">Address</label>
+              <div class="col-lg-12 col-xl-12">
+                <input class="form-control" type="text" [value]="profile.address ?? 'N/A'" readonly />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-xl-5">
+        <div class="card border mb-0">
+          <div class="card-header">
+            <h4 class="card-title mb-0">Change Password</h4>
+          </div>
+
+          <div class="card-body mb-0">
+            <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
+              <div class="form-group mb-3 row">
+                <label class="form-label">Old Password</label>
+                <div class="col-lg-12 col-xl-12 position-relative">
+                  <input
+                    class="form-control"
+                    [type]="oldPassword ? 'text' : 'password'"
+                    type="password"
+                    formControlName="old_password"
+                    placeholder="Old Password"
+                    [ngClass]="{
+                      'is-invalid':
+                        passwordForm.get('old_password')?.invalid &&
+                        (submitted || passwordForm.get('old_password')?.touched)
+                    }"
+                  />
+                  <button
+                    type="button"
+                    (click)="oldPassword = !oldPassword"
+                    class="btn position-absolute end-0"
+                    style="
+                      top: 50%;
+                      transform: translateY(-50%);
+                      border: none;
+                      background: transparent;
+                      padding: 0 8px;
+                      height: auto;
+                      cursor: pointer;
+                      margin-right: 8px;" >
+                    <i class="mdi" [ngClass]="oldPassword ? 'mdi-eye-off' : 'mdi-eye'" style="font-size:16px;"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group mb-3 row">
+                <label class="form-label">New Password</label>
+                <div class="col-lg-12 col-xl-12 position-relative">
+                  <input
+                    class="form-control"
+                    [type]="newPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    placeholder="New Password"
+                    [ngClass]="{
+                      'is-invalid':
+                        passwordForm.get('password')?.invalid &&
+                        (submitted || passwordForm.get('password')?.touched)
+                    }"
+                  />
+                  <button
+                    type="button"
+                    (click)="newPassword = !newPassword"
+                    class="btn position-absolute end-0"
+                    style="
+                      top: 50%;
+                      transform: translateY(-50%);
+                      border: none;
+                      background: transparent;
+                      padding: 0 8px;
+                      height: auto;
+                      cursor: pointer;
+                      margin-right: 8px;" >
+                    <i class="mdi" [ngClass]="newPassword ? 'mdi-eye-off' : 'mdi-eye'" style="font-size:16px;"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group mb-3 row">
+                <label class="form-label">Confirm Password</label>
+                <div class="col-lg-12 col-xl-12 position-relative">
+                  <input
+                    class="form-control"
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="password_confirmation"
+                    placeholder="Confirm Password"
+                    [ngClass]="{
+                      'is-invalid':
+                        passwordForm.get('password_confirmation')?.invalid &&
+                        (submitted || passwordForm.get('password_confirmation')?.touched)
+                    }"
+                  />
+                   <button
+                    type="button"
+                    (click)="showConfirmPassword = !showConfirmPassword"
+                    class="btn position-absolute end-0"
+                    style="
+                      top: 50%;
+                      transform: translateY(-50%);
+                      border: none;
+                      background: transparent;
+                      padding: 0 8px;
+                      height: auto;
+                      cursor: pointer;
+                      margin-right: 8px;" >
+                    <i class="mdi" [ngClass]="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'" style="font-size:16px;"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-lg-12 col-xl-12">
+                  <button type="submit" class="btn btn-primary me-2">Change Password</button>
+                  <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card border text-dark alert alert-danger mt-3 mb-0">
+
+          <div class="card-body mb-0">
+            <h4 class="card-title mb-0">Note: While Changing Password</h4>
+
+            <div class="mt-4">
+              Must be at least 6 characters<br>
+              Must contain at least 1 number!<br>
+              Must contain at least 1 in Capital Casel<br>
+              Must contain at least 1 Letter in Small Casel<br>
+              Must contain at least 1 Special Character!<br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

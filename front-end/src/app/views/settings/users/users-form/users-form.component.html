@@ -1,0 +1,441 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <ng-container *ngIf="!editUserId" [ngTemplateOutlet]="createUserForm"></ng-container>
+    <ng-container *ngIf="editUserId" [ngTemplateOutlet]="editUserForm"></ng-container>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>
+<ng-template #createUserForm>
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">{{ 'first_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="first_name"
+                    [ngClass]="{'is-invalid' : form.get('first_name')?.invalid && ( submitted || form.get('first_name')?.touched)}"
+                    id="validationServer02"
+                    value="Otto"
+            />
+            {{ form.get('first_name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="last_name" class="form-label">{{ 'last_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="last_name"
+                    [ngClass]="{'is-invalid' : form.get('last_name')?.invalid && ( submitted || form.get('last_name')?.touched)}"
+                    id="last_name"
+                    value="Otto"
+            />
+            {{ form.get('last_name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">{{ 'email' | transloco }}</label>
+            <input
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                    [ngClass]="{'is-invalid' : form.get('email')?.invalid && ( submitted || form.get('email')?.touched)}"
+                    id="email"
+                    value="Otto"
+            />
+            {{ form.get('email')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="role_id" class="form-label">{{ 'role' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('role_id')?.invalid && ( submitted || form.get('role_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="role_id"
+                    id="role_id"
+                    formControlName="role_id">
+                <option *ngFor="let role of formData?.roles" value="{{role?.id}}">{{ role?.name + ' | ' + role?.description}}</option>
+            </select>
+            {{ form.get('role_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="department_id" class="form-label">{{ 'department' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('department_id')?.invalid && ( submitted || form.get('department_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="department_id"
+                    id="department_id"
+                    formControlName="department_id">
+                <option *ngFor="let department of formData?.departments"
+                        value="{{department?.id}}">{{ department?.code + ' | ' + department?.name }}
+                </option>
+            </select>
+            {{ form.get('department_id')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-6">
+            <label for="designation_id" class="form-label">{{ 'designation' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('designation_id')?.invalid && ( submitted || form.get('designation_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="designation_id"
+                    id="designation_id"
+                    formControlName="designation_id">
+                <option *ngFor="let designation of formData?.designations"
+                        value="{{designation?.id}}">{{ designation?.title + ' | ' + designation?.description}}
+                </option>
+            </select>
+            {{ form.get('designation_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="password" class="form-label">{{ 'password' | transloco }}</label>
+            <input
+                    type="password"
+                    class="form-control"
+                    formControlName="password"
+                    [ngClass]="{'is-invalid' : form.get('password')?.invalid && ( submitted || form.get('password')?.touched)}"
+                    id="password"
+                    value="Otto"
+            />
+            {{ form.get('password')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="password_confirmation"
+                   class="form-label">{{ 'password_confirmation' | transloco }}</label>
+            <input
+                    type="password"
+                    class="form-control"
+                    formControlName="password_confirmation"
+                    [ngClass]="{'is-invalid' : form.get('password_confirmation')?.invalid && ( submitted || form.get('password_confirmation')?.touched)}"
+                    id="password"
+                    value="Otto"
+            />
+            {{ form.get('password_confirmation')?.errors | formErrors }}
+        </div>
+         <div class="col-md-6">
+            <label for="gender" class="form-label">{{ 'gender' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('gender')?.invalid && ( submitted || form.get('gender')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="gender"
+                    id="gender"
+                    formControlName="gender">
+                <option value="1">{{ 'male' | transloco }}</option>
+                <option value="2">{{ 'female' | transloco }}</option>
+            </select>
+            {{ form.get('gender')?.errors | formErrors }}
+        </div>
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">{{ 'active' | transloco }}</label>
+            <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            {{ form.get('is_active')?.errors | formErrors }}
+        </div>
+    </form>
+</ng-template>
+
+
+<ng-template #editUserForm>
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-md-6" style="justify-items: center;    text-align: center;">
+                    <img
+                        [src]="
+                            previewImage
+                            ? previewImage
+                            : editUser?.details?.profile_image
+                                ? editUser.details.profile_image
+                                : editUser?.details?.gender === 1
+                                ? 'assets/images/users/male.jpg'
+                                : editUser?.details?.gender === 2
+                                    ? 'assets/images/users/female.jpg'
+                                    : 'assets/images/users/user-24.png'
+                        "
+                        class="img-thumbnail rounded-circle avatar-xl img-fluid"
+                        alt="User Avatar"
+                    />
+                    <a
+                            href="javascript:void(0);"
+                            class="btn btn-sm bg-primary-subtle me-1"
+                            style="position: absolute;"
+                            data-bs-toggle="tooltip"
+                            (click)="proClick.click()"
+                            data-bs-original-title="Edit"
+                    >
+                        <i class="mdi mdi-pencil-outline fs-14 text-primary"></i>
+                    </a>
+                    <input type="file" hidden #proClick accept="image/png, image/jpeg"
+                           (change)="onProfilePicUpdated($event)"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationServer02" class="form-label">{{ 'first_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="first_name"
+                    [ngClass]="{'is-invalid' : form.get('first_name')?.invalid && ( submitted || form.get('first_name')?.touched)}"
+                    id="validationServer02"
+                    value="Otto"
+            />
+            {{ form.get('first_name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="last_name" class="form-label">{{ 'last_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="last_name"
+                    [ngClass]="{'is-invalid' : form.get('last_name')?.invalid && ( submitted || form.get('last_name')?.touched)}"
+                    id="last_name"
+                    value="Otto"
+            />
+            {{ form.get('last_name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="email" class="form-label">{{ 'email' | transloco }}</label>
+            <input
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                    [ngClass]="{'is-invalid' : form.get('email')?.invalid && ( submitted || form.get('email')?.touched)}"
+                    id="email"
+                    value="Otto"
+            />
+            {{ form.get('email')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="role_id" class="form-label">{{ 'role' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('role_id')?.invalid && ( submitted || form.get('role_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="role_id"
+                    id="role_id"
+                    formControlName="role_id">
+                <option *ngFor="let role of formData?.roles" value="{{role?.id}}">{{ role?.name + ' | ' + role?.description}}</option>
+            </select>
+            {{ form.get('role_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="department_id" class="form-label">{{ 'department' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('department_id')?.invalid && ( submitted || form.get('department_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="department_id"
+                    id="department_id"
+                    formControlName="department_id">
+                <option *ngFor="let department of formData?.departments"
+                        value="{{department?.id}}">{{ department?.code + ' | ' + department?.name }}
+                </option>
+            </select>
+            {{ form.get('department_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="designation_id" class="form-label">{{ 'designation' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('designation_id')?.invalid && ( submitted || form.get('designation_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="designation_id"
+                    id="designation_id"
+                    formControlName="designation_id">
+                <option *ngFor="let designation of formData?.designations"
+                        value="{{designation?.id}}">{{ designation?.title + ' | ' + designation?.description}}
+                </option>
+            </select>
+            {{ form.get('designation_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="calling_name" class="form-label">{{ 'calling_name' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="calling_name"
+                    [ngClass]="{'is-invalid' : form.get('calling_name')?.invalid && ( submitted || form.get('calling_name')?.touched)}"
+                    id="calling_name"
+                    value="Otto"
+            />
+            {{ form.get('calling_name')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="id_number" class="form-label">{{ 'id_number' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="id_number"
+                    [ngClass]="{'is-invalid' : form.get('id_number')?.invalid && ( submitted || form.get('id_number')?.touched)}"
+                    id="id_number"
+            />
+            {{ form.get('id_number')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="employee_code_reference" class="form-label">{{ 'employee_code' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="employee_code_reference"
+                    [ngClass]="{'is-invalid' : form.get('employee_code_reference')?.invalid && ( submitted || form.get('employee_code_reference')?.touched)}"
+                    id="employee_code_reference"
+            />
+            {{ form.get('employee_code_reference')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="shift_id" class="form-label">{{ 'shift' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('shift_id')?.invalid && ( submitted || form.get('shift_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="shift_id"
+                    id="shift_id"
+                    formControlName="shift_id">
+                <option *ngFor="let shift of formData?.shifts"
+                        value="{{shift?.id}}">{{ shift?.code }} | {{ shift?.name }}
+                </option>
+            </select>
+            {{ form.get('shift_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="leave_group_id" class="form-label">{{ 'leave_group' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('leave_group_id')?.invalid && ( submitted || form.get('leave_group_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="leave_group_id"
+                    id="leave_group_id"
+                    formControlName="leave_group_id">
+                <option *ngFor="let group of formData?.leaveGroups"
+                        value="{{group?.id}}">{{ group?.code }} | {{ group?.name }}
+                </option>
+            </select>
+            {{ form.get('leave_group_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="location_id" class="form-label">{{ 'location' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('location_id')?.invalid && ( submitted || form.get('location_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="location_id"
+                    id="location_id"
+                    formControlName="location_id">
+                <option *ngFor="let location of formData?.locations"
+                        value="{{location?.id}}">{{ location?.location_code }} | {{ location?.location_name }}
+                </option>
+            </select>
+            {{ form.get('location_id')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="reporting_manager" class="form-label">{{ 'reporting_manager' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('reporting_manager_id')?.invalid && ( submitted || form.get('reporting_manager_id')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="reporting_manager_id"
+                    id="reporting_manager_id"
+                    formControlName="reporting_manager_id">
+                <option *ngFor="let user of formData?.users"
+                        value="{{user?.id}}">{{ user?.last_name }} | {{ user?.first_name }}
+                </option>
+            </select>
+            {{ form.get('reporting_manager_id')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-4" *ngIf="editUser">
+            <label for="country" class="form-label">{{ 'country' | transloco }}</label>
+            <app-country-picker (onCountryUpdate)="onCountryChanged($event)"
+                                [value]="form.get('country')?.value"></app-country-picker>
+            {{ form.get('country')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="date_of_joined" class="form-label">{{ 'date_of_joined' | transloco }}</label>
+            <input
+                    type="date"
+                    class="form-control"
+                    formControlName="date_of_joined"
+                    [ngClass]="{'is-invalid' : form.get('date_of_joined')?.invalid && ( submitted || form.get('date_of_joined')?.touched)}"
+                    id="date_of_joined"
+            />
+            {{ form.get('date_of_joined')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4" *ngIf="editUser">
+            <label for="contact_no" class="form-label">{{ 'contact_no' | transloco }}</label>
+            <app-contact-no-picker (onContactNoUpdate)="onContactNoChanged($event)"
+                                   [value]="form.get('contact_no')?.value"></app-contact-no-picker>
+            {{ form.get('contact_no')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4" *ngIf="editUser">
+            <label for="contact_number_office" class="form-label">{{ 'contact_number_office' | transloco }}</label>
+            <app-contact-no-picker (onContactNoUpdate)="onContactNoOfficeChanged($event)"
+                                   [value]="form.get('contact_number_office')?.value"></app-contact-no-picker>
+            {{ form.get('contact_number_office')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="date_of_birth" class="form-label">{{ 'date_of_birth' | transloco }}</label>
+            <input
+                    type="date"
+                    class="form-control"
+                    formControlName="date_of_birth"
+                    [ngClass]="{'is-invalid' : form.get('date_of_birth')?.invalid && ( submitted || form.get('date_of_birth')?.touched)}"
+                    id="date_of_birth"
+            />
+            {{ form.get('date_of_birth')?.errors | formErrors }}
+        </div>
+        <div class="col-md-4">
+            <label for="gender" class="form-label">{{ 'gender' | transloco }}</label>
+            <select
+                    [ngClass]="{'is-invalid' : form.get('gender')?.invalid && ( submitted || form.get('gender')?.touched)}"
+                    class="datatable-selector form-select"
+                    name="gender"
+                    id="gender"
+                    formControlName="gender">
+                <option value="1">{{ 'male' | transloco }}</option>
+                <option value="2">{{ 'female' | transloco }}</option>
+            </select>
+            {{ form.get('gender')?.errors | formErrors }}
+        </div>
+        <div class="col-md-12">
+            <label for="address" class="form-label">{{ 'address' | transloco }}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="address"
+                    [ngClass]="{'is-invalid' : form.get('address')?.invalid && ( submitted || form.get('address')?.touched)}"
+                    id="address"
+            />
+            {{ form.get('address')?.errors | formErrors }}
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="validationServer02" class="form-label">{{ 'active' | transloco }}</label>
+                <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                             (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+                {{ form.get('is_active')?.errors | formErrors }}
+            </div>
+            <div class="col-md-3">
+                <label for="validationServer02" class="form-label">{{ 'is_discharged' | transloco }}</label>
+                <app-toggle-switch-component [value]="form.get('is_discharged')?.value"
+                                             (onValueChange)="onDischargeChange($event)"></app-toggle-switch-component>
+                {{ form.get('is_discharged')?.errors | formErrors }}
+            </div>
+        </div>
+    </form>
+</ng-template>

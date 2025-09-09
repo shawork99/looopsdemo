@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modal.close('success')" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-12" *ngIf="detailFormData">
+            <label for="employees" class="form-label">Employees</label>
+            <ng-select formControlName="employees" [items]="detailFormData.employees" bindLabel="name" bindValue="id"
+                [multiple]="true" placeholder="Select Employee" class="custom"
+                [ngClass]="{'is-invalid' : form.get('employees')?.invalid && ( submitted || form.get('employees')?.touched)}">
+            </ng-select>
+            {{ form.get('employees')?.errors | formErrors }}
+        </div>
+
+        <div class="col-md-12" *ngIf="detailFormData">
+            <label for="leave_types" class="form-label">Leave Types</label>
+            <ng-select formControlName="leave_types" [items]="detailFormData?.leaveType" bindLabel="name" bindValue="id"
+                [multiple]="true" placeholder="Select Leave Types" class="custom"
+                [class.is-invalid]="form.get('leave_types')?.invalid && (submitted || form.get('leave_types')?.touched)">
+            </ng-select>
+            {{ form.get('leave_types')?.errors | formErrors }}
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-light" data-bs-dismiss="modal" (click)="modal.close('success')">
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isDetailLoading$ |async">
+        <ng-container *ngIf="isDetailLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

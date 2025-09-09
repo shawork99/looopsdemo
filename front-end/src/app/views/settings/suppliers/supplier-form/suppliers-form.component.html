@@ -1,0 +1,143 @@
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="standard-modalLabel">
+    {{ modalHeader }}
+  </h1>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="modal"
+    (click)="modal.close()"
+    aria-label="Close"
+  ></button>
+</div>
+
+<div class="modal-body">
+  <form class="row g-3" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="col-md-6">
+      <label for="supplier_code" class="form-label">{{ 'supplier_code' | transloco }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="supplierCode"
+        formControlName="supplier_code"
+        [ngClass]="{ 'is-invalid': form.get('supplier_code')?.invalid && (submitted || form.get('supplier_code')?.touched) }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="form.get('supplier_code')?.invalid && (submitted || form.get('supplier_code')?.touched)"
+      >
+        Supplier code is required.
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="personName" class="form-label">{{ 'person_name' | transloco }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="personName"
+        formControlName="person_name"
+        [ngClass]="{ 'is-invalid': form.get('person_name')?.invalid && (submitted || form.get('person_name')?.touched) }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="form.get('person_name')?.invalid && (submitted || form.get('person_name')?.touched)"
+      >
+      Person name is required
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="email" class="form-label">{{ 'email' | transloco }}</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        [ngClass]="{ 'is-invalid': form.get('email')?.invalid && (submitted || form.get('email')?.touched) }"
+      />
+    </div>
+
+    <div class="col-md-6">
+      <label for="contactNumber" class="form-label">{{ 'contact_number' | transloco }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="contactNumber"
+        formControlName="contact_number"
+        [ngClass]="{ 'is-invalid': form.get('contact_number')?.invalid && (submitted || form.get('contact_number')?.touched) }"
+      />
+    </div>
+
+    <div class="col-md-12">
+      <label for="address" class="form-label">{{ 'address' | transloco }}</label>
+      <textarea
+        class="form-control"
+        id="address"
+        formControlName="address"
+        rows="2"
+      ></textarea>
+    </div>
+
+    <div class="col-md-6">
+      <label for="companyName" class="form-label">{{ 'company_name' | transloco }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="companyName"
+        formControlName="company_name"
+        [ngClass]="{ 'is-invalid': form.get('company_name')?.invalid && (submitted || form.get('company_name')?.touched) }"
+        required
+      />
+      <div
+        class="invalid-feedback"
+        *ngIf="form.get('company_name')?.invalid && (submitted || form.get('company_name')?.touched)"
+      >
+      Company name is required.
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label for="businessRegistrationNo" class="form-label">{{ 'business_registration_no' | transloco }}</label>
+      <input
+        type="text"
+        class="form-control"
+        id="businessRegistrationNo"
+        formControlName="business_register_number"
+      />
+      <input type="hidden" name="currency_id" value="1">
+    </div>
+
+    <div class="col-md-12">
+      <label class="form-label">{{ 'status' | transloco }}</label>
+      <app-toggle-switch-component
+        [value]="form.get('status')?.value == 1"
+        (onValueChange)="onStatusChange($event)"
+      ></app-toggle-switch-component>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-light"
+    data-bs-dismiss="modal"
+    (click)="modal.close()"
+  >
+    {{ 'close' | transloco }}
+  </button>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="isLoading$ | async"
+  >
+    <ng-container *ngIf="isLoading$ | async">
+      <span aria-hidden="true" class="spinner-border spinner-border-sm me-2"></span>
+    </ng-container>
+    {{ 'save' | transloco }}
+  </button>
+</div>

@@ -1,55 +1,35 @@
-import { Routes } from '@angular/router';
-import { NgModel } from '@angular/forms';
-import {ComponentLogin}from './component-login/component-login'
-import { ComponentSignup } from './component-signup/component-signup';
-import { ComponentProfile } from './component-profile/component-profile';
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { AfterLogin } from './services/after-login';
-import { BeforeLogin } from './services/before-login';
-
-import { Create } from './component-profile/create/create';
-import { Edit } from './component-profile/edit/edit';
-import { Show } from './component-profile/show/show';
+import { Routes } from '@angular/router'
+import { LayoutComponent } from './layout/layout.component'
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component'
+import { ErrorLayoutComponent } from './error-layout/error-layout.component'
+import {adminGuard} from "@core/guards/admin.guard";
 
 export const routes: Routes = [
-    {
-        path: 'login',
-        component : ComponentLogin,
-        canActivate : [BeforeLogin]
-    },
+  {
+    path: '',
+    redirectTo: 'index',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: LayoutComponent,
+    loadChildren: () =>
+      import('./views/views.route').then((mod) => mod.VIEWS_ROUTES),
+    canActivate: [adminGuard]
+  },
 
-     {
-        path: 'signup',
-        component : ComponentSignup,
-        canActivate : [BeforeLogin]
-    },
-
-
-     {
-        path: 'profile',
-        component : ComponentProfile,
-        canActivate : [AfterLogin]
-    },
-
-    {
-        path: 'profile/create',
-        component : Create,
-        canActivate : [AfterLogin]
-    },
-
-    {
-        path: 'profile/:postId/edit',
-        component : Edit,
-        canActivate : [AfterLogin]
-    },
-
-      {
-        path: 'profile/:postId',
-        component : Show,
-        canActivate : [AfterLogin]
-    },
-
-
-
-];
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    loadChildren: () =>
+      import('./views/auth/auth.route').then((mod) => mod.AUTH_ROUTES),
+  },
+  {
+    path: '',
+    component: ErrorLayoutComponent,
+    loadChildren: () =>
+      import('./views/errors/error.route').then(
+        (mod) => mod.ERROR_PAGES_ROUTES
+      ),
+  }
+]

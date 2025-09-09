@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+        {{ modalHeader }}
+    </h1>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+            aria-label="Close"
+    ></button>
+</div>
+<div class="modal-body">
+    <form class="row g-3" [formGroup]="form">
+        <div class="col-md-6">
+            <label for="validationServer02" class="form-label">{{'title' | transloco}}</label>
+            <input
+                    type="text"
+                    class="form-control"
+                    formControlName="title"
+                    [ngClass]="{'is-invalid' : form.get('title')?.invalid && ( submitted || form.get('title')?.touched)}"
+                    id="validationServer02"
+                    value="Otto"
+                    required
+            />
+            <div class="invalid-feedback"
+                 *ngIf="form.get('title')?.invalid && ( submitted || form.get('title')?.touched)">
+                Title field is invalid.
+            </div>
+        </div>
+        <div class="col-md-6 mb-2">
+            <label for="validationServer01" class="form-label"
+            >{{'description' | transloco}}</label
+            >
+            <input
+                    type="text"
+                    class="form-control"
+                    id="validationServer01"
+                    value="Mark"
+                    formControlName="description"
+                    [ngClass]="{'is-invalid' : form.get('description')?.invalid && ( submitted || form.get('description')?.touched)}"
+                    required
+            />
+            <div class="invalid-feedback"
+                 *ngIf="form.get('description')?.invalid && ( submitted || form.get('description')?.touched)">
+                Description field is invalid.
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="validationServer02" class="form-label">{{'active' | transloco}}</label>
+            <app-toggle-switch-component [value]="form.get('is_active')?.value"
+                                         (onValueChange)="onStatusChange($event)"></app-toggle-switch-component>
+            <div class="invalid-feedback"
+                 *ngIf="form.get('is_active')?.invalid && ( submitted || form.get('is_active')?.touched)">
+                Status field is invalid.
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button
+            type="button"
+            class="btn btn-light"
+            data-bs-dismiss="modal"
+            (click)="modal.close()"
+    >
+        Close
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="isLoading$ |async">
+        <ng-container *ngIf="isLoading$ |async">
+            <span aria-hidden="true" class="spinner-border spinner-border-sm mr-2"></span>
+        </ng-container>
+        Save
+    </button>
+</div>

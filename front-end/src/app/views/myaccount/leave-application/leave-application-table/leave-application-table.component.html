@@ -1,0 +1,58 @@
+
+<breadcrumb [title]="'Apps'" [subtitle]="'Leave Application'" />
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-4 justify-content-between">
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="filter.search"
+                                aria-label="Search">
+                            <button class="btn btn-primary" type="button" (click)="onSearch();">
+                                <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-sm float-end" type="button" style="margin-right: 20px;" (click)="goToAdd()">
+                            <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" stroke-width="2" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table datatable datatable-table" id="datatable_1">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Leave Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Demo rows -->
+                            <tr>
+                                <td>1</td>
+                                <td>Annual Leave</td>
+                                <td>2025-09-10</td>
+                                <td>2025-09-12</td>
+                                <td>Pending</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
